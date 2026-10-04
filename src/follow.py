@@ -24,6 +24,7 @@ DEAD_ZONE = 0.2        # |offset| below this -> go straight
 TOO_CLOSE = 0.55       # box height / frame height above this -> STOP
 SAFE_FRACTION = 0.5    # min traversable share of the strip ahead
 LOST_FRAMES = 15       # frames without the target before STOP
+MIN_REACQ_HEIGHT = 0.15  # ignore tiny, distant detections when re-acquiring (box height / frame height)
 TERRAIN_EVERY = 5      # run terrain model every N frames
 
 
@@ -106,6 +107,7 @@ def main():
     log.writerow(["frame", "target_found", "command", "reason", "fps"])
 
     lock_id, missing, mask, fps, n = None, 0, np.zeros((112, 200), dtype=np.uint8), 0.0, 0
+    last_cx = None  # last known x-centre of the target, used to re-acquire it
     safe = True
 
     while True:
@@ -129,11 +131,23 @@ def main():
             mask = predict_mask(tm["model"], tm["r"], rgb)
             safe = ground_ahead_fraction(mask) >= SAFE_FRACTION
 
+        # Re-acquire: tracker gave the target a new ID after occlusion or leaving the frame.
+        # Re-lock onto the person nearest to where the target was last seen.
+        if (lock_id is not None and lock_id not in ids and missing >= LOST_FRAMES
+                and len(ids) and last_cx is not None):
+            heights = (boxes[:, 3] - boxes[:, 1]) / H
+            ok_idx = np.where(heights >= MIN_REACQ_HEIGHT)[0]
+            if len(ok_idx):
+                centres = (boxes[ok_idx, 0] + boxes[ok_idx, 2]) / 2
+                lock_id = int(ids[ok_idx[int(np.argmin(np.abs(centres - last_cx)))]])
+                missing = 0
+
         target = None
         for b, tid in zip(boxes, ids):
             is_t = lock_id is not None and tid == lock_id
             if is_t:
                 target = b
+                last_cx = (b[0] + b[2]) / 2
             x1, y1, x2, y2 = map(int, b)
             color = (0, 255, 0) if is_t else (150, 150, 150)
             cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
