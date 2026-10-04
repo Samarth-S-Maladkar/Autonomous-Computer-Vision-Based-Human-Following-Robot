@@ -3,3 +3,4 @@ data/
 __pycache__/
 *.pyc
 results/*.mp4
+videos/
