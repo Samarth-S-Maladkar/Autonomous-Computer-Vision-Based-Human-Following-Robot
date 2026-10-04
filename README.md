@@ -296,7 +296,6 @@ Reviews run **Mon Oct 5 to Fri Oct 9**. Final submission (repo and PDF write-up)
 - [ ] **Screenshots** from the demo videos: a success, a failure or limitation, the crossing, and the re-lock.
 - [ ] **Live demo rehearsal.** Both members should be able to explain every part of the code for the Q&A.
 - [ ] Find out the **review slot** and submit before the deadline.
-- [ ] Fill in the teammate name and SRN in the **Team** line above.
 - [ ] Keep committing regularly from both team members.
 
 ## Optional improvements
