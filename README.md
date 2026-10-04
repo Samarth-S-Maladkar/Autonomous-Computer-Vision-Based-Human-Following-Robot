@@ -11,7 +11,7 @@ The two outputs are then combined into a drive command (`LEFT`, `RIGHT`, `FORWAR
 
 The project is based on the Stanford report *"Golf Bag Carrier Robot Computer Vision"* (Gupta and Gloria), which used K-means, Felzenszwalb segmentation and patch features with softmax regression for terrain, and MobileNet-SSD for person tracking. We reproduce the terrain approach on a public dataset (RUGD) and build the person-following part on a pretrained detector.
 
-**Team:** Sunidhi Shekar PES1UG24AM410 G Section and *(teammate name and SRN)*.
+**Team:** Sunidhi Shekar PES1UG24AM410 G Section and Samarth S Maladkar PES1UG24AM396 G Section.
 
 **Status:** terrain classification and person following are done and tested (results below). The write-up and the slides are in progress, listed under **To do** at the end of this file.
 
