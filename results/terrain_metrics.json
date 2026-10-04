@@ -1,0 +1,73 @@
+{
+  "kmeans_k8": {
+    "pixel_acc": 0.6108,
+    "majority_baseline": 0.5939,
+    "traversable_IoU": 0.3927
+  },
+  "softmax_r1": {
+    "pixel_acc": 0.6822,
+    "majority_baseline": 0.5939,
+    "traversable_IoU": 0.4356,
+    "confusion": [
+      [
+        78909,
+        27515,
+        0
+      ],
+      [
+        28385,
+        43349,
+        0
+      ],
+      [
+        783,
+        259,
+        0
+      ]
+    ]
+  },
+  "softmax_r5": {
+    "pixel_acc": 0.7169,
+    "majority_baseline": 0.5939,
+    "traversable_IoU": 0.4857,
+    "confusion": [
+      [
+        81065,
+        25357,
+        2
+      ],
+      [
+        24314,
+        47398,
+        22
+      ],
+      [
+        555,
+        487,
+        0
+      ]
+    ]
+  },
+  "softmax_r15": {
+    "pixel_acc": 0.7423,
+    "majority_baseline": 0.5939,
+    "traversable_IoU": 0.5287,
+    "confusion": [
+      [
+        81577,
+        24774,
+        73
+      ],
+      [
+        20173,
+        51447,
+        114
+      ],
+      [
+        248,
+        794,
+        0
+      ]
+    ]
+  }
+}
