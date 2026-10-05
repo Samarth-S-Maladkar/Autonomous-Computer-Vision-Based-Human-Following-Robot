@@ -13,7 +13,7 @@ The project is based on the Stanford report *"Golf Bag Carrier Robot Computer Vi
 
 **Team:** Sunidhi Shekar PES1UG24AM410 G Section and Samarth S Maladkar PES1UG24AM396 G Section.
 
-**Status:** terrain classification and person following are done and tested (results below). The write-up and the slides are in progress, listed under **To do** at the end of this file.
+**Status:** terrain classification and person following are done and tested (results below). The write-up (PDF) and the slides are submitted separately.
 
 ---
 
@@ -247,14 +247,14 @@ Three phone clips (1024 x 576, 30 fps) recorded in a residential courtyard, run 
 | Clip                                              | Frames    | Average FPS | Target found |
 | ------------------------------------------------- | --------- | ----------- | ------------ |
 | 1. Walk toward, away from and across the camera   | 793       | 24.6        | 98.9%        |
-| 2. A second person crosses in front of the target | 555       | 24.9        | 97.3%        |
-| 3. Target leaves the frame and returns            | 585       | 25.3        | 68.9%        |
-| **Overall**                                       | **1,933** | **24.9**    | **89.3%**    |
+| 2. A second person crosses in front of the target | 555       | 24.8        | 97.3%        |
+| 3. Target leaves the frame and returns            | 585       | 25.2        | 68.9%        |
+| **Overall**                                       | **1,933** | **24.8**    | **89.3%**    |
 
 
 - **Clip 1:** `FORWARD` while the target is centred, `STOP` when they are close enough, `LEFT` or `RIGHT` on the sideways walk.
 - **Clip 2:** the lock stayed on the target (no ID switches). Tracking was lost for 15 frames while the other person blocked the target, then the target was re-locked.
-- **Clip 3:** the low found rate is expected, because the target was out of frame for about 167 frames and the output was `STOP` ("target lost"). The target was re-locked when they walked back in.
+- **Clip 3:** the low found rate is expected, because the target was out of frame for about 180 frames and the output was `STOP` ("target lost"). The target was re-locked when they walked back in.
 
 An earlier version of the re-lock rule locked onto a small background detection in clip 3 and stayed there. The minimum box height (`MIN_REACQ_HEIGHT`) fixed it.
 
@@ -274,5 +274,3 @@ An earlier version of the re-lock rule locked onto a small background detection 
 2. Wigness, M., Eum, S., Rogers, J. G., Han, D. and Kwon, H. *A RUGD Dataset for Autonomous Navigation and Visual Perception in Unstructured Outdoor Environments.* IROS 2019.
 3. Felzenszwalb, P. F. and Huttenlocher, D. P. *Efficient graph-based image segmentation.* IJCV 59, 2004.
 4. Howard, A. G. et al. *MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications.* arXiv:1704.04861, 2017.
-
-
