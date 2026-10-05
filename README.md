@@ -275,32 +275,4 @@ An earlier version of the re-lock rule locked onto a small background detection 
 3. Felzenszwalb, P. F. and Huttenlocher, D. P. *Efficient graph-based image segmentation.* IJCV 59, 2004.
 4. Howard, A. G. et al. *MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications.* arXiv:1704.04861, 2017.
 
----
 
-# To do
-
-Reviews run **Mon Oct 5 to Fri Oct 9**. Final submission (repo and PDF write-up) is due **Sat Oct 10, 11:59 PM**.
-
-## Done
-
-- [x] Terrain classification (K-means baseline and patch features + softmax, evaluated on held-out sequences)
-- [x] Person detection, tracking, lock, lost-target handling, re-lock and follow command (`src/follow.py`)
-- [x] Test clips, FPS, target-found rate and ID-switch counts
-- [x] README person-following section
-
-## Remaining
-
-- [ ] **Share the private repo with faculty and TAs** (Settings, then Collaborators). Only the repo owner can do this, and it is mandatory.
-- [ ] **One-page PDF write-up:** problem statement, dataset details, approach, implementation overview, conclusions. The assignment text says both "one-page" and "two-page", so confirm with faculty.
-- [ ] **Slide deck (about 8 slides):** problem, the paper, data, methods, terrain results with example images, follow demo with screenshots, limitations and future work.
-- [ ] **Screenshots** from the demo videos: a success, a failure or limitation, the crossing, and the re-lock.
-- [ ] **Live demo rehearsal.** Both members should be able to explain every part of the code for the Q&A.
-- [ ] Find out the **review slot** and submit before the deadline.
-- [ ] Keep committing regularly from both team members.
-
-## Optional improvements
-
-- [ ] **Terrain:** raise `max_iter` from 300 to 1000 in `src/terrain.py` to remove the convergence warning, then rerun.
-- [ ] **Terrain:** run on the full RUGD dataset (`python src/terrain.py data/RUGD`) for a larger test set and more sand and water pixels. If done, recommit the new model and metrics, and update the results table.
-- [ ] **Follow:** record a clip outdoors on grass or a dirt path to show the terrain safety rule firing.
-- [ ] **Follow:** require a new person to be visible for a few frames before re-locking, to reduce wrong re-locks.
