@@ -11,9 +11,9 @@ The two outputs are then combined into a drive command (`LEFT`, `RIGHT`, `FORWAR
 
 The project is based on the Stanford report *"Golf Bag Carrier Robot Computer Vision"* (Gupta and Gloria), which used K-means, Felzenszwalb segmentation and patch features with softmax regression for terrain, and MobileNet-SSD for person tracking. We reproduce the terrain approach on a public dataset (RUGD) and build the person-following part on a pretrained detector.
 
-**Team:** Sunidhi Shekar PES1UG24AM410 G Section and *(teammate name and SRN)*.
+**Team:** Sunidhi Shekar PES1UG24AM410 G Section and Samarth S Maladkar PES1UG24AM396 G Section.
 
-**Status:** terrain classification and person following are done and tested (results below). The write-up and the slides are in progress, listed under **To do** at the end of this file.
+**Status:** terrain classification and person following are done and tested (results below). The write-up (PDF) and the slides are submitted separately.
 
 ---
 
@@ -228,12 +228,22 @@ Test clips go in `videos/`, which is git-ignored. Record your own (landscape, 30
 
 Three phone clips (1024 x 576, 30 fps) recorded in a residential courtyard, run on a laptop CPU.
 
+
 | Clip | Frames | Average FPS | Target found |
 |---|---|---|---|
 | 1. Walk toward, away from and across the camera | 793 | 24.6 | 98.9% |
 | 2. A second person crosses in front of the target | 555 | 24.9 | 97.3% |
 | 3. Target leaves the frame and returns | 585 | 25.3 | 68.9% |
 | **Overall** | **1,933** | **24.9** | **89.3%** |
+=======
+
+| Clip                                              | Frames    | Average FPS | Target found |
+| ------------------------------------------------- | --------- | ----------- | ------------ |
+| 1. Walk toward, away from and across the camera   | 793       | 24.6        | 98.9%        |
+| 2. A second person crosses in front of the target | 555       | 24.8        | 97.3%        |
+| 3. Target leaves the frame and returns            | 585       | 25.2        | 68.9%        |
+| **Overall**                                       | **1,933** | **24.8**    | **89.3%**    |
+
 
 - **Clip 1:** `FORWARD` while the target is centred, `STOP` when they are close enough, `LEFT` or `RIGHT` on the sideways walk.
 - **Clip 2:** the lock stayed on the target (no ID switches). Tracking was lost for 15 frames while the other person blocked the target, then the target was re-locked.
@@ -258,6 +268,7 @@ An earlier version of the re-lock rule locked onto a small background detection 
 2. Wigness, M., Eum, S., Rogers, J. G., Han, D. and Kwon, H. *A RUGD Dataset for Autonomous Navigation and Visual Perception in Unstructured Outdoor Environments.* IROS 2019.
 3. Felzenszwalb, P. F. and Huttenlocher, D. P. *Efficient graph-based image segmentation.* IJCV 59, 2004.
 4. Howard, A. G. et al. *MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications.* arXiv:1704.04861, 2017.
+
 
 ---
 
@@ -286,3 +297,5 @@ Reviews run **Mon Oct 5 to Fri Oct 9**. Final submission (repo and PDF write-up)
 - [ ] **Terrain:** run on the full RUGD dataset (`python src/terrain.py data/RUGD`) for a larger test set and more sand and water pixels. If done, recommit the new model and metrics, and update the results table.
 - [ ] **Follow:** record a clip outdoors on grass or a dirt path to show the terrain safety rule firing.
 - [ ] **Follow:** require a new person to be visible for a few frames before re-locking, to reduce wrong re-locks.
+=======
+
