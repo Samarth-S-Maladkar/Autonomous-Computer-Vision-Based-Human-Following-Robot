@@ -105,6 +105,9 @@ def main():
     th = max(2, int(2 * sc))
     writer = cv2.VideoWriter(args.out, cv2.VideoWriter_fourcc(*"mp4v"),
                              cap.get(cv2.CAP_PROP_FPS) or 20, (W, H))
+    if not args.no_show:
+        cv2.namedWindow("follow", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("follow", 1100, int(1100 * H / W))
     logf = open(args.log, "w", newline="")
     log = csv.writer(logf)
     log.writerow(["frame", "target_found", "command", "reason", "fps"])
@@ -175,10 +178,14 @@ def main():
         fps = 0.9 * fps + 0.1 / max(dt, 1e-6) if fps else 1 / max(dt, 1e-6)
 
         overlay_mask(frame, mask, sc)
-        cv2.putText(frame, f"{cmd} ({reason})", (int(10 * sc), H - int(40 * sc)),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.9 * sc, (0, 255, 255), th)
-        cv2.putText(frame, f"FPS {fps:.1f}  lock {lock_id}", (int(10 * sc), H - int(12 * sc)),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6 * sc, (255, 255, 255), th)
+        # command and FPS go under the mask (top-left) so they are never cropped by the window edge
+        ty = int((10 + 168) * sc) + int(40 * sc)
+        cv2.putText(frame, f"{cmd}", (int(10 * sc), ty),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1.4 * sc, (0, 0, 0), th + 3)
+        cv2.putText(frame, f"{cmd}", (int(10 * sc), ty),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1.4 * sc, (0, 255, 255), th)
+        cv2.putText(frame, f"{reason} | FPS {fps:.1f} | lock {lock_id}", (int(10 * sc), ty + int(36 * sc)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7 * sc, (255, 255, 255), max(1, th - 1))
 
         writer.write(frame)
         log.writerow([n, int(target is not None), cmd, reason, f"{fps:.1f}"])
