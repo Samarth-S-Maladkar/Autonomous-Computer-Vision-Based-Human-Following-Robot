@@ -73,11 +73,12 @@ def decide(locked, lost, safe, hazard, close, offset):
     return "FORWARD", "target centred"
 
 
-def overlay_mask(frame, mask):
+def overlay_mask(frame, mask, sc):
     colors = np.array([[90, 90, 90], [0, 200, 0], [0, 0, 220]], dtype=np.uint8)  # BGR
-    small = cv2.resize(colors[mask], (300, 168), interpolation=cv2.INTER_NEAREST)
-    frame[10:178, 10:310] = small
-    cv2.rectangle(frame, (10, 10), (310, 178), (255, 255, 255), 1)
+    mw, mh, m = int(300 * sc), int(168 * sc), int(10 * sc)
+    small = cv2.resize(colors[mask], (mw, mh), interpolation=cv2.INTER_NEAREST)
+    frame[m:m + mh, m:m + mw] = small
+    cv2.rectangle(frame, (m, m), (m + mw, m + mh), (255, 255, 255), max(1, int(sc)))
 
 
 def main():
@@ -100,6 +101,8 @@ def main():
     os.makedirs("results", exist_ok=True)
     W = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     H = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    sc = max(H / 576.0, 1.0)  # scale overlays so they stay readable on HD / 4K videos
+    th = max(2, int(2 * sc))
     writer = cv2.VideoWriter(args.out, cv2.VideoWriter_fourcc(*"mp4v"),
                              cap.get(cv2.CAP_PROP_FPS) or 20, (W, H))
     logf = open(args.log, "w", newline="")
@@ -150,9 +153,9 @@ def main():
                 last_cx = (b[0] + b[2]) / 2
             x1, y1, x2, y2 = map(int, b)
             color = (0, 255, 0) if is_t else (150, 150, 150)
-            cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-            cv2.putText(frame, f"ID {tid}", (x1, y1 - 6),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
+            cv2.rectangle(frame, (x1, y1), (x2, y2), color, th)
+            cv2.putText(frame, f"ID {tid}", (x1, max(y1 - 6, int(20 * sc))),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6 * sc, color, th)
 
         missing = 0 if target is not None else missing + 1
         lost = lock_id is not None and missing > LOST_FRAMES
@@ -171,11 +174,11 @@ def main():
         dt = time.time() - t0
         fps = 0.9 * fps + 0.1 / max(dt, 1e-6) if fps else 1 / max(dt, 1e-6)
 
-        overlay_mask(frame, mask)
-        cv2.putText(frame, f"{cmd} ({reason})", (10, H - 40),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 255), 2)
-        cv2.putText(frame, f"FPS {fps:.1f}  lock {lock_id}", (10, H - 12),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+        overlay_mask(frame, mask, sc)
+        cv2.putText(frame, f"{cmd} ({reason})", (int(10 * sc), H - int(40 * sc)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.9 * sc, (0, 255, 255), th)
+        cv2.putText(frame, f"FPS {fps:.1f}  lock {lock_id}", (int(10 * sc), H - int(12 * sc)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6 * sc, (255, 255, 255), th)
 
         writer.write(frame)
         log.writerow([n, int(target is not None), cmd, reason, f"{fps:.1f}"])
